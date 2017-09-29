@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,7 +78,7 @@ public class ComicsResource {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public JsonNode getComics() throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public List<Comics> getComics() throws NoSuchAlgorithmException, JsonProcessingException, IOException {
 
 		Client client = ClientBuilder.newClient();
 
@@ -122,9 +123,14 @@ public class ComicsResource {
 				.queryParam("hash", geraHash())
 				.request(MediaType.TEXT_PLAIN).get(String.class);
 
-		System.out.println(response);
+		System.out.println(response);	
+		
 
-		return parseJson(response);
+		JsonNode nameNode = parseJson(response);
+
+		List<Comics> comics = converterJsonDTOComics(nameNode);
+
+		return comics; //parseJson(response);
 	}
 
 	/**
@@ -140,7 +146,7 @@ public class ComicsResource {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public Comics getComicsId(Integer id) throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public List<Comics> getComicsId(Integer id) throws NoSuchAlgorithmException, JsonProcessingException, IOException {
 
 		Client client = ClientBuilder.newClient();
 
@@ -174,7 +180,7 @@ public class ComicsResource {
 
 		JsonNode nameNode = parseJson(response);
 
-		Comics comics = converterJsonDTOComics(nameNode);
+		List<Comics> comics = converterJsonDTOComics(nameNode);
 
 		return comics;
 
@@ -190,14 +196,14 @@ public class ComicsResource {
 	 * @throws IOException
 	 * @throws JsonProcessingException
 	 */
-	public Comics getComicCreators(Integer id) throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public List<Comics> getComicCreators(Integer id) throws NoSuchAlgorithmException, JsonProcessingException, IOException {
 
-		Comics comics = getComicsId(id);
+		List<Comics> comics = getComicsId(id);
 
 		Client client = ClientBuilder.newClient();
 
 		String response = client.target(BASE_URI)
-				.path(COMICS_RESOURCE + "/" + comics.getId() + COMICS_CREATOR_RESOURCE)
+				.path(COMICS_RESOURCE + "/" + comics.get(0).getId() + COMICS_CREATOR_RESOURCE)
 				.queryParam("ts", TS)
 				.queryParam("apikey", PUBLIC_KEY)
 				.queryParam("hash", geraHash())
@@ -211,7 +217,7 @@ public class ComicsResource {
 
 		List<Creators> creators = converterJsonDTOCreators(nameNode);
 
-		comics.setCreators(creators);
+		comics.get(0).setCreators(creators);
 
 		return comics;
 
@@ -230,6 +236,9 @@ public class ComicsResource {
 	 */
 	public JsonNode parseJson(String response) throws IOException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
+		
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		
 		JsonNode rootNode = mapper.readTree(response);
 		JsonNode nameNode = rootNode.get("data").get("results");
 		return nameNode;
@@ -272,22 +281,31 @@ public class ComicsResource {
 	 *            the name node
 	 * @return the comics
 	 */
-	public Comics converterJsonDTOComics(JsonNode nameNode) {
-		Comics comics = new Comics();
+	public List<Comics> converterJsonDTOComics(JsonNode nameNode) {
 
-		if (!nameNode.get(0).get("id").isNull()) {
-			comics.setId((Integer) nameNode.get(0).get("id").numberValue());
-		}
-		if (!nameNode.get(0).get("title").isNull()) {
-			comics.setTitle(nameNode.get(0).get("title").textValue());
-		}
-		if (!nameNode.get(0).get("description").isNull()) {
-			comics.setDescription(nameNode.get(0).get("description").textValue());
-		}
-		if (!nameNode.get(0).get("variantDescription").isNull()) {
-			comics.setVariantDescription(nameNode.get(0).get("variantDescription").textValue());
+		List<Comics> comics = new ArrayList<Comics>();
+
+		for (int i = 0; i < nameNode.size(); i++) {
+
+			Comics comic = new Comics();
+
+			if (!nameNode.get(i).get("id").isNull()) {
+				comic.setId((Integer) nameNode.get(i).get("id").numberValue());
+			}
+			if (!nameNode.get(i).get("title").isNull()) {
+				comic.setTitle(nameNode.get(i).get("title").textValue());
+			}
+			if (!nameNode.get(i).get("description").isNull()) {
+				comic.setDescription(nameNode.get(i).get("description").textValue());
+			}
+			if (!nameNode.get(i).get("variantDescription").isNull()) {
+				comic.setVariantDescription(nameNode.get(i).get("variantDescription").textValue());
+			}
+			
+			comics.add(comic);
 		}
 		return comics;
+
 	}
 
 }

@@ -2,11 +2,14 @@ package br.com.marvelapi.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Comics.
  */
-
+@JsonInclude(Include.NON_EMPTY)	
 public class Comics {
 
 	/** The Id. */

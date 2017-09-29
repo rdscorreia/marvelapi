@@ -9,13 +9,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import br.com.marvelapi.endpoint.ComicsResource;
 
@@ -27,34 +25,35 @@ public class HomeController {
 	ComicsResource comicsResource;
 
 	@RequestMapping("/")
-	public String index() {
+	public ModelAndView index() {
 		System.out.println("Entrando na home da Marvel API");
-		return "ok";
+
+		ModelAndView modelAndView = new ModelAndView("ok");
+		return modelAndView;
 
 	}
 
 	@RequestMapping(value = "/comics", method = RequestMethod.GET)
-	@ResponseBody
 	@Cacheable(value = "comics")
-	public JsonNode getComics() throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public ModelAndView getComics() throws NoSuchAlgorithmException, JsonProcessingException, IOException {
 
-		return comicsResource.getComics();
+		ModelAndView modelAndView = new ModelAndView("listaComics");
+		modelAndView.addObject("comics", comicsResource.getComics());
+		return modelAndView;
 
 	}
 
 	@RequestMapping(value = "/comics/{id}", method = RequestMethod.GET)
-	@ResponseBody
 	@Cacheable(value = "comicsId")
 	public ModelAndView getComicsId(@PathVariable("id") Integer id) throws Exception {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(comicsResource.getComicsId(id));
+		modelAndView.addObject("comic", comicsResource.getComicsId(id));
 		return modelAndView;
 
 	}
 
 	@RequestMapping(value = "/comicscreator/{id}", method = RequestMethod.GET)
-	@ResponseBody
 	@Cacheable(value = "comicsCreatorId")
 	public ModelAndView getComicCreators(@PathVariable("id") Integer id) throws Exception {
 

@@ -1,8 +1,11 @@
 package br.com.marvelapi.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * The Class Creators.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Creators {
 
 	/** The Id. */
