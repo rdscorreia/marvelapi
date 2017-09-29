@@ -1,15 +1,15 @@
 package br.com.marvelapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * The Class Creators.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(Include.NON_EMPTY)
 public class Creators {
 
 	/** The Id. */
-	private Integer Id;
+	private Integer id;
 
 	/** The full name. */
 	private String fullName;
@@ -27,7 +27,7 @@ public class Creators {
 	 * @return the id
 	 */
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class Creators {
 	 *            the new id
 	 */
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Creators {
 	 */
 	@Override
 	public String toString() {
-		return "Creators [Id=" + Id + ", fullName=" + fullName + "]";
+		return "Creators [id=" + id + ", fullName=" + fullName + "]";
 	}
 
 	/*
@@ -78,7 +78,7 @@ public class Creators {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((Id == null) ? 0 : Id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
 		return result;
 	}
@@ -97,10 +97,10 @@ public class Creators {
 		if (getClass() != obj.getClass())
 			return false;
 		Creators other = (Creators) obj;
-		if (Id == null) {
-			if (other.Id != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!Id.equals(other.Id))
+		} else if (!id.equals(other.id))
 			return false;
 		if (fullName == null) {
 			if (other.fullName != null)

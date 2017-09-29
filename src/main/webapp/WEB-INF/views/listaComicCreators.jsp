@@ -12,20 +12,20 @@
 	<div>
 		<h1>Lista de Comics com Creators</h1>
 
-		<label>Código do comic: </label> <span>${ comicCreators.id}</span>
+		<label>Código do comic: </label> <span>${ comicCreators[0].id}</span>
 		<p>
-			<label>Título do comic: </label> <span>${ comicCreators.title}</span>
+			<label>Título do comic: </label> <span>${ comicCreators[0].title}</span>
 		<p>
-			<label>Descrição: </label> <span>${ comicCreators.description}</span>
+			<label>Descrição: </label> <span>${ comicCreators[0].description}</span>
 		<p>
-			<label>Outras descrições: </label><span>${ comicCreators.variantDescription}</span>
+			<label>Outras descrições: </label><span>${ comicCreators[0].variantDescription}</span>
 		<p>
 		<table border=1>
 			<tr>
 				<th>Código Creator</th>
 				<th>Nome Completo</th>
 			</tr>
-			<c:forEach items="${ comicCreators.creators }" var="creator">
+			<c:forEach items="${ comicCreators[0].creators }" var="creator">
 				<tr>
 					<td>${creator.id}</td>
 					<td>${creator.fullName }</td>
