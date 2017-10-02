@@ -28,7 +28,7 @@ public class HomeController {
 	public ModelAndView index() {
 		System.out.println("Entrando na home da Marvel API");
 
-		ModelAndView modelAndView = new ModelAndView("ok");
+		ModelAndView modelAndView = new ModelAndView("home");
 		return modelAndView;
 
 	}
@@ -47,7 +47,7 @@ public class HomeController {
 	@Cacheable(value = "comicsId")
 	public ModelAndView getComicsId(@PathVariable("id") Integer id) throws Exception {
 
-		ModelAndView modelAndView = new ModelAndView();
+		ModelAndView modelAndView = new ModelAndView("comicDetalhe");
 		modelAndView.addObject("comic", comicsResource.getComicsId(id));
 		return modelAndView;
 
