@@ -12,13 +12,11 @@
 <body>
 	Deu certo
 
+	<p>Entrando na home da Marvel API
 	<p>
-
-		Entrando na home da Marvel API <p>
-		
 	<ul>
 		<li><a href="${s:mvcUrl('HC#getComics').build()}">Clique aqui</a> para acessar a lista de Comics</li>
-		
+
 	</ul>
 
 </body>

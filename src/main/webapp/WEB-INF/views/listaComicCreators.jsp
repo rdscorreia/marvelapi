@@ -6,10 +6,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Lista de Comics com Creators</title>
+
+<c:url value="/resources/css" var="cssPath" />
+<link rel="stylesheet" href="${cssPath}/bootstrap.min.css" />
+<link rel="stylesheet" href="${cssPath}/bootstrap-theme.min.css" />
+
+<style type="text/css">
+        body{
+            padding-top: 60px 0px;
+        }
+    </style>
+    
 </head>
 <body>
 
-	<div>
+	<div class="container" >
 		<h1>Lista de Comics com Creators</h1>
 
 		<label>Código do comic: </label> <span>${ comicCreators[0].id}</span>
@@ -20,7 +31,7 @@
 		<p>
 			<label>Outras descrições: </label><span>${ comicCreators[0].variantDescription}</span>
 		<p>
-		<table border=1>
+		<table class="table table-bordered table-striped table-hover">
 			<tr>
 				<th>Código Creator</th>
 				<th>Nome Completo</th>

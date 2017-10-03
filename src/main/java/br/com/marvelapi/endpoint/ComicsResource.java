@@ -2,7 +2,6 @@ package br.com.marvelapi.endpoint;
 
 import java.io.IOException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +15,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.marvelapi.model.Comics;
 import br.com.marvelapi.model.Creators;
 
+/**
+ * The Class ComicsResource.
+ */
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class ComicsResource {
@@ -44,13 +45,18 @@ public class ComicsResource {
 
 	/** The Constant COMICS_CREATOR_RESOURCE. */
 	private final static String COMICS_CREATOR_RESOURCE = "/creators";
+		
+	/**
+	 * Instantiates a new comics resource.
+	 */
+	public ComicsResource() {
+	}
 
+	
 	/**
 	 * Gera hash.
 	 *
 	 * @return the string
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
 	 */
 	public static String geraHash() {
 		String hashKey = null;
@@ -67,52 +73,50 @@ public class ComicsResource {
 
 	}
 
+
 	/**
 	 * Gets the comics.
 	 *
 	 * @return the comics
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 * @throws JsonProcessingException
-	 *             the json processing exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
 	 */
-	public List<Comics> getComics() throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public List<Comics> getComics()  {
 
 		Client client = ClientBuilder.newClient();
 
 		/*
 		 * WebTarget webtarget = client.target(BASE_URI);
 		 * 
-		 * WebTarget resourceWebTarget = webtarget.path(COMICS_RESOURCE); WebTarget
-		 * resourceWebTargetWithQueryParam = resourceWebTarget.queryParam("ts", TS)
-		 * .queryParam("apikey", PUBLIC_KEY) .queryParam("hash", geraHash());
+		 * WebTarget resourceWebTarget = webtarget.path(COMICS_RESOURCE); 
+		 * WebTarget resourceWebTargetWithQueryParam = resourceWebTarget.queryParam("ts", TS)
+		 * 																.queryParam("apikey", PUBLIC_KEY)
+		 * 																.queryParam("hash", geraHash());
 		 * 
-		 * System.out.println("Endpoint gerado com parametros: " +
-		 * resourceWebTargetWithQueryParam);
+		 * System.out.println("Endpoint gerado com parametros: " + resourceWebTargetWithQueryParam);
 		 * 
 		 * Da pra devolver direto sem usar o Invocation Builder ou com o
-		 * InvocationBuilder Response response =
-		 * resourceWebTargetWithQueryParam.request(MediaType.TEXT_PLAIN_TYPE).get();
-		 * Invocation.Builder invocationBuilder =
-		 * resourceWebTargetWithQueryParam.request(MediaType.TEXT_PLAIN_TYPE);
+		 * InvocationBuilder Response response = resourceWebTargetWithQueryParam
+		 * 												.request(MediaType.TEXT_PLAIN_TYPE)
+		 * 												.get();
+		 * Invocation.Builder invocationBuilder = resourceWebTargetWithQueryParam
+		 * 												.request(MediaType.TEXT_PLAIN_TYPE);
 		 * 
 		 * Response response = invocationBuilder.get();
-		 * 
-		 * /* Usando no estilo de API fluente
 		 */
 
 		/*
-		 * Response String response = client.target(BASE_URI)
+		 * Usando no estilo de API fluente
 		 * 
-		 * .path(COMICS_RESOURCE) .queryParam("ts", TS) .queryParam("apikey",
-		 * PUBLIC_KEY) .queryParam("hash", geraHash()) .request(MediaType.TEXT_PLAIN)
-		 * .get();
+		 * Response response = client.target(BASE_URI)
+		 *			.path(COMICS_RESOURCE) 
+		 *			.queryParam("ts", TS) 
+		 *			.queryParam("apikey", PUBLIC_KEY) 
+		 *			.queryParam("hash", geraHash()) 
+		 *			.request(MediaType.TEXT_PLAIN)
+		 * 			.get(); 
 		 * 
-		 * 
-		 * System.out.println(response.getStatus()); String entity =
-		 * response.readEntity(String.class); System.out.println(entity);
+		 * System.out.println(response.getStatus()); 
+		 * String entity =  response.readEntity(String.class); 
+		 * System.out.println(entity);
 		 * 
 		 */
 
@@ -123,48 +127,25 @@ public class ComicsResource {
 				.queryParam("hash", geraHash())
 				.request(MediaType.TEXT_PLAIN).get(String.class);
 
-		System.out.println(response);	
-		
+		System.out.println(response);		
 
 		JsonNode nameNode = parseJson(response);
 
 		List<Comics> comics = converterJsonDTOComics(nameNode);
 
-		return comics; //parseJson(response);
+		return comics;
 	}
 
+	
 	/**
 	 * Gets the comics id.
 	 *
-	 * @param id
-	 *            the id
+	 * @param id the id
 	 * @return the comics id
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 * @throws JsonProcessingException
-	 *             the json processing exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
 	 */
-	public List<Comics> getComicsId(Integer id) throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public List<Comics> getComicsId(Integer id)  {
 
 		Client client = ClientBuilder.newClient();
-
-		/*
-		 * Response response = client.target(BASE_URI) 
-		 * 		.path(COMICS_RESOURCE)
-		 * 		.queryParam("ts", TS) 
-		 * 		.queryParam("apikey", PUBLIC_KEY) 
-		 * 		.queryParam("hash", geraHash()) 
-		 * 		.queryParam("id", id) 
-		 * 		.request(MediaType.APPLICATION_JSON)
-		 * 		.get();
-		 * 
-		 * System.out.println(response.getStatus()); String entity =
-		 * response.readEntity(String.class); 
-		 * System.out.println(entity); 
-		 * return entity;
-		 */
 
 		String response = client.target(BASE_URI)
 				.path(COMICS_RESOURCE)
@@ -186,17 +167,14 @@ public class ComicsResource {
 
 	}
 
+
 	/**
-	 * Gets the comics creator.
+	 * Gets the comic creators.
 	 *
-	 * @param id
-	 *            the id
-	 * @return the comics creator
-	 * @throws NoSuchAlgorithmException
-	 * @throws IOException
-	 * @throws JsonProcessingException
+	 * @param id the id
+	 * @return the comic creators
 	 */
-	public List<Comics> getComicCreators(Integer id) throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public List<Comics> getComicCreators(Integer id) {
 
 		List<Comics> comics = getComicsId(id);
 
@@ -223,32 +201,37 @@ public class ComicsResource {
 
 	}
 
+
 	/**
 	 * Parses the json.
 	 *
-	 * @param response
-	 *            the response
+	 * @param response the response
 	 * @return the json node
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws JsonProcessingException
-	 *             the json processing exception
 	 */
-	public JsonNode parseJson(String response) throws IOException, JsonProcessingException {
+	public JsonNode parseJson(String response) {
+
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		mapper.setSerializationInclusion(Include.NON_NULL);
-		
-		JsonNode rootNode = mapper.readTree(response);
-		JsonNode nameNode = rootNode.get("data").get("results");
+
+		JsonNode rootNode;
+		JsonNode nameNode = null;
+
+		try {
+			rootNode = mapper.readTree(response);
+			nameNode = rootNode.get("data").get("results");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 		return nameNode;
 	}
+
 
 	/**
 	 * Converter json DTO creators.
 	 *
-	 * @param nameNode
-	 *            the name node
+	 * @param nameNode the name node
 	 * @return the list
 	 */
 	private List<Creators> converterJsonDTOCreators(JsonNode nameNode) {
@@ -274,12 +257,12 @@ public class ComicsResource {
 		return creators;
 	}
 
+
 	/**
 	 * Converter json DTO comics.
 	 *
-	 * @param nameNode
-	 *            the name node
-	 * @return the comics
+	 * @param nameNode the name node
+	 * @return the list
 	 */
 	public List<Comics> converterJsonDTOComics(JsonNode nameNode) {
 
@@ -304,6 +287,7 @@ public class ComicsResource {
 			
 			comics.add(comic);
 		}
+
 		return comics;
 
 	}

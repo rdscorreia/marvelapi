@@ -127,7 +127,7 @@
 			<version>2.26</version>
 		</dependency>
 
-		<!-- Jersey RX -->
+		<!-- Jersey RX 
 		<dependency>
 			<groupId>org.glassfish.jersey.ext.rx</groupId>
 			<artifactId>jersey-rx-client-guava</artifactId>
@@ -143,6 +143,20 @@
 			<artifactId>jersey-rx-client-rxjava2</artifactId>
 			<version>2.26</version>
 		</dependency>
+		-->
+
+		<dependency>
+			<groupId>javax.json</groupId>
+			<artifactId>javax.json-api</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1</version>
+		</dependency>
+
 
 
 

@@ -1,8 +1,5 @@
 package br.com.marvelapi.controller;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
@@ -12,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import br.com.marvelapi.endpoint.ComicsResource;
 
@@ -35,7 +30,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/comics", method = RequestMethod.GET)
 	@Cacheable(value = "comics")
-	public ModelAndView getComics() throws NoSuchAlgorithmException, JsonProcessingException, IOException {
+	public ModelAndView getComics() {
 
 		ModelAndView modelAndView = new ModelAndView("listaComics");
 		modelAndView.addObject("comics", comicsResource.getComics());
@@ -45,7 +40,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/comics/{id}", method = RequestMethod.GET)
 	@Cacheable(value = "comicsId")
-	public ModelAndView getComicsId(@PathVariable("id") Integer id) throws Exception {
+	public ModelAndView getComicsId(@PathVariable("id") Integer id) {
 
 		ModelAndView modelAndView = new ModelAndView("comicDetalhe");
 		modelAndView.addObject("comic", comicsResource.getComicsId(id));
@@ -55,7 +50,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/comicscreator/{id}", method = RequestMethod.GET)
 	@Cacheable(value = "comicsCreatorId")
-	public ModelAndView getComicCreators(@PathVariable("id") Integer id) throws Exception {
+	public ModelAndView getComicCreators(@PathVariable("id") Integer id) {
 
 		ModelAndView modelAndView = new ModelAndView("listaComicCreators");
 		modelAndView.addObject("comicCreators", comicsResource.getComicCreators(id));

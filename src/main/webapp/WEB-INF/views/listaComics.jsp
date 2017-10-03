@@ -7,19 +7,30 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Lista de Comics</title>
+
+<c:url value="/resources/css" var="cssPath" />
+<link rel="stylesheet" href="${cssPath}/bootstrap.min.css" />
+<link rel="stylesheet" href="${cssPath}/bootstrap-theme.min.css" />
+
+<style type="text/css">
+        body{
+            padding-top: 60px;
+        }
+    </style>
+
 </head>
 <body>
 
-	<div>
+	<div class="container">
+	
 		<h1>Lista de Comics</h1>
 
-		<table border=1>
+		<table class="table table-bordered table-striped table-hover">
 			<tr>
 				<th>Código Comics</th>
 				<th>Título</th>
 				<th>Descrição</th>
 				<th>Outras Descriões</th>
-				<th>Criadores</th>
 
 			</tr>
 			<c:forEach items="${ comics }" var="comic">
@@ -28,8 +39,6 @@
 					<td>${comic.title }</td>
 					<td>${comic.description }</td>
 					<td>${comic.variantDescription }</td>
-					
-
 				</tr>
 			</c:forEach>
 		</table>
