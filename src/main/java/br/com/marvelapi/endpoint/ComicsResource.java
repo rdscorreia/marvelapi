@@ -125,8 +125,10 @@ public class ComicsResource {
 				.queryParam("ts", TS)
 				.queryParam("apikey", PUBLIC_KEY)
 				.queryParam("hash", geraHash())
-				.request(MediaType.TEXT_PLAIN).get(String.class);
-
+				.request(MediaType.TEXT_PLAIN)
+				.get(String.class);
+		
+		 
 		System.out.println(response);		
 
 		JsonNode nameNode = parseJson(response);
@@ -156,6 +158,8 @@ public class ComicsResource {
 				.request(MediaType.APPLICATION_JSON)
 				.get()
 				.readEntity(String.class);
+				
+			
 
 		System.out.println(response);
 

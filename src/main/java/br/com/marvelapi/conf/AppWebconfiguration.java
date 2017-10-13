@@ -28,11 +28,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.google.common.cache.CacheBuilder;
 
-import br.com.marvelapi.controller.HomeController;
-import br.com.marvelapi.endpoint.ComicsResource;
-
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { HomeController.class, ComicsResource.class })
+@ComponentScan(basePackages = "br.com.marvelapi")
+//(basePackageClasses = { HomeController.class, ComicsResource.class })
 @EnableCaching
 public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 

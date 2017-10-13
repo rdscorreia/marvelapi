@@ -127,34 +127,27 @@
 			<version>2.26</version>
 		</dependency>
 
-		<!-- Jersey RX 
-		<dependency>
-			<groupId>org.glassfish.jersey.ext.rx</groupId>
-			<artifactId>jersey-rx-client-guava</artifactId>
-			<version>2.26</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.ext.rx</groupId>
-			<artifactId>jersey-rx-client-rxjava</artifactId>
-			<version>2.26</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.ext.rx</groupId>
-			<artifactId>jersey-rx-client-rxjava2</artifactId>
-			<version>2.26</version>
-		</dependency>
-		-->
+		<!-- Jersey RX <dependency> <groupId>org.glassfish.jersey.ext.rx</groupId> 
+			<artifactId>jersey-rx-client-guava</artifactId> <version>2.26</version> </dependency> 
+			<dependency> <groupId>org.glassfish.jersey.ext.rx</groupId> <artifactId>jersey-rx-client-rxjava</artifactId> 
+			<version>2.26</version> </dependency> <dependency> <groupId>org.glassfish.jersey.ext.rx</groupId> 
+			<artifactId>jersey-rx-client-rxjava2</artifactId> <version>2.26</version> 
+			</dependency> -->
 
+		<!-- <dependency> <groupId>javax.json</groupId> <artifactId>javax.json-api</artifactId> 
+			<version>1.1</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
 		<dependency>
 			<groupId>javax.json</groupId>
 			<artifactId>javax.json-api</artifactId>
-			<version>1.1</version>
+			<version>1.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
-			<version>1.1</version>
+			<version>1.0</version>
 		</dependency>
 
 

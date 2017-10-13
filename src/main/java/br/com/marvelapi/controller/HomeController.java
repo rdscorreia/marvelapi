@@ -21,10 +21,9 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public ModelAndView index() {
-		System.out.println("Entrando na home da Marvel API");
 
-		ModelAndView modelAndView = new ModelAndView("home");
-		return modelAndView;
+		System.out.println("Entrando na home da Marvel API");
+		return new ModelAndView("home");
 
 	}
 

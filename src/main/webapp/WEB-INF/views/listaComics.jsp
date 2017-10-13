@@ -35,7 +35,7 @@
 			</tr>
 			<c:forEach items="${ comics }" var="comic">
 				<tr>
-					<td><a href="${ s:mvcUrl('HC#getComicsId').arg(0, comic.id).build() }" >${ comic.id} </a></td>
+					<td><a href="${ s:mvcUrl('HC#getComicsId').arg(0, comic.id).build() }" >${ comic.id } </a></td>
 					<td>${comic.title }</td>
 					<td>${comic.description }</td>
 					<td>${comic.variantDescription }</td>
