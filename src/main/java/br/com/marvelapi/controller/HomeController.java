@@ -12,13 +12,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.marvelapi.endpoint.ComicsResource;
 
+/**
+ * The Class HomeController.
+ */
 @RestController
 @Scope(value = WebApplicationContext.SCOPE_REQUEST)
 public class HomeController {
 
+	/** The comics resource. */
 	@Autowired
 	ComicsResource comicsResource;
 
+	/**
+	 * Index.
+	 *
+	 * @return the model and view
+	 */
 	@RequestMapping("/")
 	public ModelAndView index() {
 
@@ -27,6 +36,11 @@ public class HomeController {
 
 	}
 
+	/**
+	 * Gets the comics.
+	 *
+	 * @return the comics
+	 */
 	@RequestMapping(value = "/comics", method = RequestMethod.GET)
 	@Cacheable(value = "comics")
 	public ModelAndView getComics() {
@@ -37,6 +51,13 @@ public class HomeController {
 
 	}
 
+	/**
+	 * Gets the comics id.
+	 *
+	 * @param id
+	 *            the id
+	 * @return the comics id
+	 */
 	@RequestMapping(value = "/comics/{id}", method = RequestMethod.GET)
 	@Cacheable(value = "comicsId")
 	public ModelAndView getComicsId(@PathVariable("id") Integer id) {
@@ -47,6 +68,13 @@ public class HomeController {
 
 	}
 
+	/**
+	 * Gets the comic creators.
+	 *
+	 * @param id
+	 *            the id
+	 * @return the comic creators
+	 */
 	@RequestMapping(value = "/comicscreator/{id}", method = RequestMethod.GET)
 	@Cacheable(value = "comicsCreatorId")
 	public ModelAndView getComicCreators(@PathVariable("id") Integer id) {
@@ -57,16 +85,18 @@ public class HomeController {
 
 	}
 
+	/**
+	 * Gets the creator id.
+	 *
+	 * @param resourceURI
+	 *            the resource URI
+	 * @return the creator id
+	 */
 	@RequestMapping(value = "/creatorId/{resourceURI}", method = RequestMethod.GET)
 	public ModelAndView getCreatorId(@PathVariable("resourceURI") String resourceURI) {
 
 		ModelAndView modelAndView = new ModelAndView("creatorDetalhe");
-		try {
-			modelAndView.addObject("creator", comicsResource.getCreatorId(resourceURI));
-		} catch (Exception e) {
-			modelAndView.addObject("error", "Creator não encontrado");
-		}
-
+		modelAndView.addObject("creator", comicsResource.getCreatorId(resourceURI));
 		return modelAndView;
 	}
 

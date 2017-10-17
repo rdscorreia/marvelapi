@@ -7,87 +7,84 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * The Class CreatorsDTO.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_EMPTY)
 public class CreatorsDTO {
 
+	/** The id. */
 	@JsonProperty("id")
 	private Integer id;
 
+	/** The full name. */
 	@JsonProperty("fullName")
 	private String fullName;
 
+	/** The urls. */
 	@JsonProperty("urls")
 	private List<Urls> urls;
 
+	/**
+	 * Instantiates a new creators DTO.
+	 */
 	public CreatorsDTO() {
 
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	/**
+	 * Gets the full name.
+	 *
+	 * @return the full name
+	 */
 	public String getFullName() {
 		return fullName;
 	}
 
+	/**
+	 * Sets the full name.
+	 *
+	 * @param fullName the new full name
+	 */
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
 
+	/**
+	 * Gets the urls.
+	 *
+	 * @return the urls
+	 */
 	public List<Urls> getUrls() {
 		return urls;
 	}
 
+	/**
+	 * Sets the urls.
+	 *
+	 * @param urls the new urls
+	 */
 	public void setUrls(List<Urls> urls) {
 		this.urls = urls;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((urls == null) ? 0 : urls.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CreatorsDTO other = (CreatorsDTO) obj;
-		if (fullName == null) {
-			if (other.fullName != null)
-				return false;
-		} else if (!fullName.equals(other.fullName))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (urls == null) {
-			if (other.urls != null)
-				return false;
-		} else if (!urls.equals(other.urls))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "CreatorsDTO [id=" + id + ", fullName=" + fullName + ", urls=" + urls + "]";
 	}
 
 }

@@ -28,12 +28,20 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.google.common.cache.CacheBuilder;
 
+/**
+ * The Class AppWebconfiguration.
+ */
 @EnableWebMvc
 @ComponentScan(basePackages = "br.com.marvelapi")
 //(basePackageClasses = { HomeController.class, ComicsResource.class })
 @EnableCaching
 public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 
+	/**
+	 * Internal resource view resolver.
+	 *
+	 * @return the internal resource view resolver
+	 */
 	@Bean
 	public InternalResourceViewResolver internalResourceViewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -42,6 +50,11 @@ public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 
+	/**
+	 * Message source.
+	 *
+	 * @return the message source
+	 */
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -51,6 +64,11 @@ public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 		return messageSource;
 	}
 
+	/**
+	 * Mvc conversion service.
+	 *
+	 * @return the formatting conversion service
+	 */
 	@Bean
 	public FormattingConversionService mvcConversionService() {
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
@@ -61,16 +79,31 @@ public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 		return conversionService;
 	}
 
+	/**
+	 * Multipart resolver.
+	 *
+	 * @return the multipart resolver
+	 */
 	@Bean
 	public MultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();
 	}
 
+	/**
+	 * Rest template.
+	 *
+	 * @return the rest template
+	 */
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
 
+	/**
+	 * Cache manager.
+	 *
+	 * @return the cache manager
+	 */
 	@Bean
 	public CacheManager cacheManager() {
 		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(5,
@@ -80,6 +113,12 @@ public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 		return manager;
 	}
 
+	/**
+	 * Content negotiation view resolver.
+	 *
+	 * @param manager the manager
+	 * @return the view resolver
+	 */
 	@Bean
 	public ViewResolver contentNegotiationViewResolver(ContentNegotiationManager manager) {
 		List<ViewResolver> viewResolvers = new ArrayList<>();
@@ -94,6 +133,9 @@ public class AppWebconfiguration extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter#configureDefaultServletHandling(org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer)
+	 */
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();

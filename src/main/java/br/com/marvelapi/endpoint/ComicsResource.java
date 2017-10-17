@@ -26,7 +26,6 @@ import br.com.marvelapi.dto.ComicsDataDTO;
 import br.com.marvelapi.dto.CreatorsDTO;
 import br.com.marvelapi.dto.CreatorsDataDTO;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ComicsResource.
  */
@@ -157,13 +156,13 @@ public class ComicsResource {
 	 * 
 	 * Itera as urls para poder pegar somente o código do Creator
 	 *
-	 * @param comicsDataDTO the comics data DTO
+	 * @param comicData the comic data
 	 */
 	private void extractCodigoCreator(ComicsDataDTO comicData) {
 		
 		for (ComicsDTO comic : comicData.getComicResultsDTO().getComicsDTO()) {
-			for (ComicsCreatorsItemsDTO itemCreator : comic.getCreators().getItems()) {				
-				String[] linkSplit = itemCreator.getResourceURI().split("/");				
+			for (ComicsCreatorsItemsDTO itemCreator : comic.getCreators().getItems()) {	
+				String[] linkSplit = itemCreator.getResourceURI().split("/");
 				itemCreator.setResourceURI(linkSplit[linkSplit.length -1]);
 			}
 		}
@@ -222,12 +221,6 @@ public class ComicsResource {
 		mapComicListCreator.put("comic", comics);
 		mapComicListCreator.put("creator", creatorsData.getCreatorsResultsDTO().getCreatorsDTO());
 
-		//JsonNode nameNode = parseJson(response);
-
-		//List<CreatorsDTO> creators = converterJsonDTOCreators(nameNode);
-
-		//comics.setCreators(creators);
-
 		return mapComicListCreator;
 
 	}
@@ -241,7 +234,6 @@ public class ComicsResource {
 	public CreatorsDTO getCreatorId(String resourceURI) {
 
 		Client client = ClientBuilder.newClient();
-
 		
 		CreatorsDataDTO	 creatorsDataDTO = client.target(BASE_URI)
 					.path(CREATORS_RESOURCE)
@@ -262,6 +254,7 @@ public class ComicsResource {
 	 * @param response the response
 	 * @return the json node
 	 */
+	@Deprecated
 	public JsonNode parseJson(String response) {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -288,6 +281,8 @@ public class ComicsResource {
 	 * @param nameNode the name node
 	 * @return the list
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private List<CreatorsDTO> converterJsonDTOCreators(JsonNode nameNode) {
 
 		List<CreatorsDTO> creators = new ArrayList<CreatorsDTO>();
@@ -318,6 +313,7 @@ public class ComicsResource {
 	 * @param nameNode the name node
 	 * @return the list
 	 */
+	@Deprecated
 	public List<ComicsDTO> converterJsonDTOComics(JsonNode nameNode) {
 
 		List<ComicsDTO> comics = new ArrayList<ComicsDTO>();
@@ -345,8 +341,5 @@ public class ComicsResource {
 		return comics;
 
 	}
-
-
-	
 
 }
