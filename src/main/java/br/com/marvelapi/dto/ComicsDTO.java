@@ -1,36 +1,41 @@
-package br.com.marvelapi.model;
+package br.com.marvelapi.dto;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The Class Comics.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_EMPTY)	
-public class Comics {
+public class ComicsDTO {
 
 	/** The Id. */
+	@JsonProperty("id")
 	private Integer id;
 
 	/** The title. */
+	@JsonProperty("title")
 	private String title;
 
 	/** The variant description. */
+	@JsonProperty("variantDescription")
 	private String variantDescription;
 
 	/** The description. */
+	@JsonProperty("description")
 	private String description;
 
 	/** The creators. */
-	private List<Creators> creators;
+	@JsonProperty("creators")
+	private ComicsCreatorsDTO creators;
 
 	/**
 	 * Instantiates a new comics.
 	 */
-	public Comics() {
+	public ComicsDTO() {
 	}
 
 	/**
@@ -109,24 +114,12 @@ public class Comics {
 		this.description = description;
 	}
 
-	/**
-	 * Gets the creators.
-	 *
-	 * @return the creators
-	 */
-	public List<Creators> getCreators() {
+	public ComicsCreatorsDTO getCreators() {
 		return creators;
 	}
 
-	/**
-	 * Sets the creators.
-	 *
-	 * @param creators
-	 *            the new creators
-	 */
-	public void setCreators(List<Creators> creators) {
+	public void setCreators(ComicsCreatorsDTO creators) {
 		this.creators = creators;
-
 	}
 
 	/*
@@ -157,7 +150,7 @@ public class Comics {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Comics other = (Comics) obj;
+		ComicsDTO other = (ComicsDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

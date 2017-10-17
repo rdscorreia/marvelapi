@@ -13,16 +13,16 @@
 <link rel="stylesheet" href="${cssPath}/bootstrap-theme.min.css" />
 
 <style type="text/css">
-        body{
-            padding-top: 60px;
-        }
-    </style>
+body {
+	padding-top: 60px;
+}
+</style>
 
 </head>
 <body>
 
 	<div class="container">
-	
+
 		<h1>Lista de Comics</h1>
 
 		<table class="table table-bordered table-striped table-hover">
@@ -31,18 +31,44 @@
 				<th>Título</th>
 				<th>Descrição</th>
 				<th>Outras Descriões</th>
+				<th>Criador / Papel</th>
 
 			</tr>
 			<c:forEach items="${ comics }" var="comic">
 				<tr>
-					<td><a href="${ s:mvcUrl('HC#getComicsId').arg(0, comic.id).build() }" >${ comic.id } </a></td>
-					<td>${comic.title }</td>
-					<td>${comic.description }</td>
-					<td>${comic.variantDescription }</td>
+					<td><a
+						href="${ s:mvcUrl('HC#getComicsId').arg(0, comic.id).build() }">${ comic.id }
+					</a></td>
+					<td>${ comic.title }</td>
+					<td>${ comic.description }</td>
+					<td>${ comic.variantDescription }</td>
+					<td>
+
+						<table class="table table-bordered table-striped table-hover">
+							<!-- 
+							<tr>
+								<td>Nome</td>
+								<td>Papel</td>
+							</tr>
+							 -->
+
+							<c:forEach items="${ comic.creators.items }" var="creator">
+								<tr>
+									<td><a
+										href="${ s:mvcUrl('HC#getCreatorId').arg(0, creator.resourceURI).build() }">${ creator.name }</a></td>
+									<td>${ creator.role }</td>
+								</tr>
+							</c:forEach>
+
+						</table>
+
+					</td>
 				</tr>
+
 			</c:forEach>
 		</table>
 	</div>
 
 </body>
 </html>
+

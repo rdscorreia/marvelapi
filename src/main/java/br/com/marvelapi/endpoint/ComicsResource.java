@@ -3,7 +3,9 @@ package br.com.marvelapi.endpoint;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -18,9 +20,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.marvelapi.model.Comics;
-import br.com.marvelapi.model.Creators;
+import br.com.marvelapi.dto.ComicsCreatorsItemsDTO;
+import br.com.marvelapi.dto.ComicsDTO;
+import br.com.marvelapi.dto.ComicsDataDTO;
+import br.com.marvelapi.dto.CreatorsDTO;
+import br.com.marvelapi.dto.CreatorsDataDTO;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ComicsResource.
  */
@@ -45,6 +51,9 @@ public class ComicsResource {
 
 	/** The Constant COMICS_CREATOR_RESOURCE. */
 	private final static String COMICS_CREATOR_RESOURCE = "/creators";
+	
+	/** The Constant CREATORS_RESOURCE. */
+	private final static String CREATORS_RESOURCE = "/v1/public/creators";
 		
 	/**
 	 * Instantiates a new comics resource.
@@ -79,7 +88,7 @@ public class ComicsResource {
 	 *
 	 * @return the comics
 	 */
-	public List<Comics> getComics()  {
+	public List<ComicsDTO> getComics()  {
 
 		Client client = ClientBuilder.newClient();
 
@@ -90,22 +99,18 @@ public class ComicsResource {
 		 * WebTarget resourceWebTargetWithQueryParam = resourceWebTarget.queryParam("ts", TS)
 		 * 																.queryParam("apikey", PUBLIC_KEY)
 		 * 																.queryParam("hash", geraHash());
-		 * 
 		 * System.out.println("Endpoint gerado com parametros: " + resourceWebTargetWithQueryParam);
-		 * 
 		 * Da pra devolver direto sem usar o Invocation Builder ou com o
 		 * InvocationBuilder Response response = resourceWebTargetWithQueryParam
 		 * 												.request(MediaType.TEXT_PLAIN_TYPE)
 		 * 												.get();
 		 * Invocation.Builder invocationBuilder = resourceWebTargetWithQueryParam
 		 * 												.request(MediaType.TEXT_PLAIN_TYPE);
-		 * 
 		 * Response response = invocationBuilder.get();
 		 */
 
 		/*
 		 * Usando no estilo de API fluente
-		 * 
 		 * Response response = client.target(BASE_URI)
 		 *			.path(COMICS_RESOURCE) 
 		 *			.queryParam("ts", TS) 
@@ -113,13 +118,12 @@ public class ComicsResource {
 		 *			.queryParam("hash", geraHash()) 
 		 *			.request(MediaType.TEXT_PLAIN)
 		 * 			.get(); 
-		 * 
 		 * System.out.println(response.getStatus()); 
 		 * String entity =  response.readEntity(String.class); 
 		 * System.out.println(entity);
-		 * 
 		 */
-
+		
+		/*
 		String response = client.target(BASE_URI)
 				.path(COMICS_RESOURCE)
 				.queryParam("ts", TS)
@@ -127,15 +131,43 @@ public class ComicsResource {
 				.queryParam("hash", geraHash())
 				.request(MediaType.TEXT_PLAIN)
 				.get(String.class);
-		
-		 
 		System.out.println(response);		
-
 		JsonNode nameNode = parseJson(response);
+		List<ComicsDTO> comics = converterJsonDTOComics(nameNode);
+		*/
+		
+		ComicsDataDTO comicsDataDTO =  client.target(BASE_URI)
+				.path(COMICS_RESOURCE)
+				.queryParam("ts", TS)
+				.queryParam("apikey", PUBLIC_KEY)
+				.queryParam("hash", geraHash())
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.get()
+				.readEntity(ComicsDataDTO.class);
 
-		List<Comics> comics = converterJsonDTOComics(nameNode);
+		extractCodigoCreator(comicsDataDTO);
 
-		return comics;
+		return comicsDataDTO.getComicResultsDTO().getComicsDTO();
+
+	}
+
+
+	/**
+	 * Extract codigo creator.
+	 * 
+	 * Itera as urls para poder pegar somente o código do Creator
+	 *
+	 * @param comicsDataDTO the comics data DTO
+	 */
+	private void extractCodigoCreator(ComicsDataDTO comicData) {
+		
+		for (ComicsDTO comic : comicData.getComicResultsDTO().getComicsDTO()) {
+			for (ComicsCreatorsItemsDTO itemCreator : comic.getCreators().getItems()) {				
+				String[] linkSplit = itemCreator.getResourceURI().split("/");				
+				itemCreator.setResourceURI(linkSplit[linkSplit.length -1]);
+			}
+		}
+
 	}
 
 	
@@ -145,11 +177,11 @@ public class ComicsResource {
 	 * @param id the id
 	 * @return the comics id
 	 */
-	public List<Comics> getComicsId(Integer id)  {
+	public ComicsDTO getComicsId(Integer id)  {
 
 		Client client = ClientBuilder.newClient();
 
-		String response = client.target(BASE_URI)
+		ComicsDataDTO comicsDataDTO = client.target(BASE_URI)
 				.path(COMICS_RESOURCE)
 				.queryParam("ts", TS)
 				.queryParam("apikey", PUBLIC_KEY)
@@ -157,17 +189,9 @@ public class ComicsResource {
 				.queryParam("id", id)
 				.request(MediaType.APPLICATION_JSON)
 				.get()
-				.readEntity(String.class);
-				
-			
+				.readEntity(ComicsDataDTO.class);
 
-		System.out.println(response);
-
-		JsonNode nameNode = parseJson(response);
-
-		List<Comics> comics = converterJsonDTOComics(nameNode);
-
-		return comics;
+		return comicsDataDTO.getComicResultsDTO().getComicsDTO().get(0);
 
 	}
 
@@ -178,33 +202,59 @@ public class ComicsResource {
 	 * @param id the id
 	 * @return the comic creators
 	 */
-	public List<Comics> getComicCreators(Integer id) {
+	public Map<String, Object> getComicCreators(Integer id) {
 
-		List<Comics> comics = getComicsId(id);
+		ComicsDTO comics = getComicsId(id);
 
 		Client client = ClientBuilder.newClient();
 
-		String response = client.target(BASE_URI)
-				.path(COMICS_RESOURCE + "/" + comics.get(0).getId() + COMICS_CREATOR_RESOURCE)
+		CreatorsDataDTO creatorsData = client.target(BASE_URI)
+				.path(COMICS_RESOURCE + "/" + comics.getId() + COMICS_CREATOR_RESOURCE)
 				.queryParam("ts", TS)
 				.queryParam("apikey", PUBLIC_KEY)
 				.queryParam("hash", geraHash())
 				.request(MediaType.APPLICATION_JSON)
 				.get()
-				.readEntity(String.class);
+				.readEntity(CreatorsDataDTO.class);
 
-		System.out.println(response);
+		Map<String, Object> mapComicListCreator = new HashMap<>();
+		
+		mapComicListCreator.put("comic", comics);
+		mapComicListCreator.put("creator", creatorsData.getCreatorsResultsDTO().getCreatorsDTO());
 
-		JsonNode nameNode = parseJson(response);
+		//JsonNode nameNode = parseJson(response);
 
-		List<Creators> creators = converterJsonDTOCreators(nameNode);
+		//List<CreatorsDTO> creators = converterJsonDTOCreators(nameNode);
 
-		comics.get(0).setCreators(creators);
+		//comics.setCreators(creators);
 
-		return comics;
+		return mapComicListCreator;
 
 	}
+	
+	/**
+	 * Gets the creator id.
+	 *
+	 * @param resourceURI the resource URI
+	 * @return the creator id
+	 */
+	public CreatorsDTO getCreatorId(String resourceURI) {
 
+		Client client = ClientBuilder.newClient();
+
+		
+		CreatorsDataDTO	 creatorsDataDTO = client.target(BASE_URI)
+					.path(CREATORS_RESOURCE)
+					.path(resourceURI)
+					.queryParam("ts", TS)
+					.queryParam("apikey", PUBLIC_KEY)
+					.queryParam("hash", geraHash())
+					.request(MediaType.APPLICATION_JSON)
+					.get()
+					.readEntity(CreatorsDataDTO.class);
+			
+		return creatorsDataDTO.getCreatorsResultsDTO().getCreatorsDTO().get(0);
+	}
 
 	/**
 	 * Parses the json.
@@ -238,13 +288,13 @@ public class ComicsResource {
 	 * @param nameNode the name node
 	 * @return the list
 	 */
-	private List<Creators> converterJsonDTOCreators(JsonNode nameNode) {
+	private List<CreatorsDTO> converterJsonDTOCreators(JsonNode nameNode) {
 
-		List<Creators> creators = new ArrayList<Creators>();
+		List<CreatorsDTO> creators = new ArrayList<CreatorsDTO>();
 
 		for (int i = 0; i < nameNode.size(); i++) {
 
-			Creators creator = new Creators();
+			CreatorsDTO creator = new CreatorsDTO();
 
 			if (!nameNode.get(i).get("id").isNull()) {
 				creator.setId((Integer) nameNode.get(i).get("id").numberValue());
@@ -268,13 +318,13 @@ public class ComicsResource {
 	 * @param nameNode the name node
 	 * @return the list
 	 */
-	public List<Comics> converterJsonDTOComics(JsonNode nameNode) {
+	public List<ComicsDTO> converterJsonDTOComics(JsonNode nameNode) {
 
-		List<Comics> comics = new ArrayList<Comics>();
+		List<ComicsDTO> comics = new ArrayList<ComicsDTO>();
 
 		for (int i = 0; i < nameNode.size(); i++) {
 
-			Comics comic = new Comics();
+			ComicsDTO comic = new ComicsDTO();
 
 			if (!nameNode.get(i).get("id").isNull()) {
 				comic.setId((Integer) nameNode.get(i).get("id").numberValue());
@@ -295,5 +345,8 @@ public class ComicsResource {
 		return comics;
 
 	}
+
+
+	
 
 }

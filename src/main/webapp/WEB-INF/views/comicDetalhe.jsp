@@ -4,20 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Comics</title>
 </head>
 <body>
 
 	<div>
-		<h1>Lista de Comics</h1>
+		<h1>Comics</h1>
 
-		<label>Código do comic: </label> <span>${ comic[0].id}</span>
+		<label>Código do comic: </label> <span>${ comic.id }</span>
 		<p>
-			<label>Título do comic: </label> <span>${ comic[0].title}</span>
+			<label>Título do comic: </label> <span>${ comic.title }</span>
 		<p>
-			<label>Descrição: </label> <span>${ comic[0].description}</span>
+			<label>Descrição: </label> <span>${ comic.description }</span>
 		<p>
-			<label>Outras descrições: </label><span>${ comic[0].variantDescription}</span>
+			<label>Outras descrições: </label><span>${ comic.variantDescription }</span>
 		<p>		
 	</div>
 

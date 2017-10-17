@@ -57,4 +57,17 @@ public class HomeController {
 
 	}
 
+	@RequestMapping(value = "/creatorId/{resourceURI}", method = RequestMethod.GET)
+	public ModelAndView getCreatorId(@PathVariable("resourceURI") String resourceURI) {
+
+		ModelAndView modelAndView = new ModelAndView("creatorDetalhe");
+		try {
+			modelAndView.addObject("creator", comicsResource.getCreatorId(resourceURI));
+		} catch (Exception e) {
+			modelAndView.addObject("error", "Creator não encontrado");
+		}
+
+		return modelAndView;
+	}
+
 }
