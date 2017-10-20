@@ -99,5 +99,26 @@ public class HomeController {
 		modelAndView.addObject("creator", comicsResource.getCreatorId(resourceURI));
 		return modelAndView;
 	}
+	
+	
+	@RequestMapping(value = "/comicsNode", method = RequestMethod.GET)
+	@Cacheable(value = "comicsNode")
+	public ModelAndView getComicsNode() {
+		
+		ModelAndView modelAndView = new ModelAndView("listaComics");
+		modelAndView.addObject("comics", comicsResource.getComicsNode());
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/comicsNode/{id}", method = RequestMethod.GET)
+	@Cacheable(value = "comicsIdNode")
+	public ModelAndView getComicsIdNode(@PathVariable("id") Integer id) {
+
+		ModelAndView modelAndView = new ModelAndView("comicDetalhe");
+		modelAndView.addObject("comic", comicsResource.getComicsIdNode(id));
+		return modelAndView;
+
+	}
 
 }

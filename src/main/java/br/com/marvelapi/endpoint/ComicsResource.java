@@ -53,6 +53,9 @@ public class ComicsResource {
 	
 	/** The Constant CREATORS_RESOURCE. */
 	private final static String CREATORS_RESOURCE = "/v1/public/creators";
+	
+	/** The Constant BASE_URI_NODE. */
+	private final static String BASE_URI_NODE = "http://localhost:3000";
 		
 	/**
 	 * Instantiates a new comics resource.
@@ -342,4 +345,43 @@ public class ComicsResource {
 
 	}
 
+	
+	/**
+	 * Gets the comics id node.
+	 *
+	 * @param id the id
+	 * @return the comics id node
+	 */
+	public ComicsDTO getComicsIdNode(Integer id) {
+		
+		Client client = ClientBuilder.newClient();
+
+		ComicsDTO comicsDTO = client.target(BASE_URI_NODE)
+				.path("/comics")
+				.path("/" + id)
+				.request(MediaType.APPLICATION_JSON)
+				.get()
+				.readEntity(ComicsDTO.class);
+
+		return comicsDTO;
+
+	}
+
+
+	/**
+	 * Gets the comics node.
+	 *
+	 * @return the comics node
+	 */
+	public List<ComicsDTO> getComicsNode() {
+		Client client = ClientBuilder.newClient();
+		
+		ComicsDataDTO comicsDataDTO = client.target(BASE_URI_NODE)
+				.path("/comics")
+				.request(MediaType.APPLICATION_JSON)
+				.get()
+				.readEntity(ComicsDataDTO.class);
+		
+		return comicsDataDTO.getComicResultsDTO().getComicsDTO();
+	}
 }
