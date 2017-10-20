@@ -1,0 +1,14 @@
+{
+    "name": "marvelapi",
+    "version": "1.0.0",
+    "main": "app.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "author": "rdscorreia",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.16.2"
+    }
+  }
+  
